@@ -6,7 +6,10 @@
 package com.mycompany.taller;
 
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -14,18 +17,13 @@ import com.mongodb.MongoClient;
  */
 public class HelloMongo {
 
-    private final static String HOST = "localhost";
-    private final static int PORT = 27017;
+    private DB database;
+    private DBCollection collection;
 
-    public static void main(String args[]) {
-        try {
-            // Connect to mongodb server on localhost
-            MongoClient mongoClient = new MongoClient(HOST,  PORT);
-            DB db = mongoClient.getDB("test");
-            System.out.println("Successfully connected to MongoDB   ");
-        }
-        catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": "   + e.getMessage());
-        }
+    public DBCollection setUp() throws UnknownHostException {
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+        database = mongoClient.getDB("DataBase");
+        collection = database.getCollection("paciente");
+        return collection;
     }
 }

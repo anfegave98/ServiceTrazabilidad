@@ -5,25 +5,91 @@
  */
 package com.mycompany.taller;
 
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Projections;
+import static com.mongodb.client.model.Projections.excludeId;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.bson.Document;
 
 /**
  *
- * @author brown
+ * @author white
  */
 public class HelloMongo {
 
-    private DB database;
-    private DBCollection collection;
+    private final static String HOST = "localhost";
+    private final static int PORT = 27017;
 
-    public DBCollection setUp() throws UnknownHostException {
-        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        database = mongoClient.getDB("DataBase");
-        collection = database.getCollection("paciente");
-        return collection;
+    public Paciente add(Paciente a) {
+        try {
+
+            MongoClient mongoClient = new MongoClient(HOST, PORT);
+
+            DB db = mongoClient.getDB("monRequi");
+
+            DBCollection coll = db.getCollection("pacientes");
+            DBObject doc = new BasicDBObject("nombre", a.getName())
+                    .append("telefono", a.getTelephone())
+                    .append("contacto", a.getContacto())
+                    .append("address", a.getAddress())
+                    .append("fecha", a.getDate());
+
+            coll.insert(doc);
+
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": "
+                    + e.getMessage());
+        }
+        return a;
     }
+
+    public List<Paciente> show() throws UnknownHostException {
+        MongoClient mongoClient = new MongoClient(HOST, PORT);
+        
+           Map<String, Paciente> empMap = new HashMap<String, Paciente>();
+            MongoDatabase database = mongoClient.getDatabase("monRequi");
+
+           MongoCollection<Document> collection = database.getCollection("pacientes");
+
+           MongoCursor<Document> cursor = collection.find().projection(Projections.excludeId()).iterator();
+         
+
+        try {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                Gson gson = new Gson();
+                Paciente c = gson.fromJson(doc.toJson(), Paciente.class);
+                System.out.println(c.getName());
+                System.out.println(c.getAddress());
+                System.out.println(c.getDate());
+                System.out.println(c.getTelephone());
+                System.out.println(c.getContacto());
+                empMap.put(c.getName(),c);
+            }
+
+        } finally {
+            cursor.close();
+        }
+        
+        Collection<Paciente> c = empMap.values();
+        List<Paciente> list = new ArrayList<Paciente>();
+        list.addAll(c);
+        return list;
+        
+    }
+
 }

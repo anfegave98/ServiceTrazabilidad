@@ -1,13 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.mycompany.taller;
 
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
-
+ 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,49 +15,32 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-@Path("/paciente")
+ 
+import com.mycompany.taller.Paciente;
+import com.mycompany.taller.PacienteDAO;
+import java.net.UnknownHostException;
+/**
+ *
+ * @author white
+ */
+@Path("/pacientes")
 public class PacienteService {
-
-    // URI:
-    // /contextPath/servletPath/employees
-    @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public String getPaciente_JSON() throws UnknownHostException {
-        // List<Paciente> listOfCountries = PacienteDAO.getAllPacientes();
-        HelloMongo m = new HelloMongo();
-        DBCollection a = m.setUp();
-        DBCursor cursor = a.find();
-        try {
-            while (cursor.hasNext()) {
-                DBObject object = cursor.next();
-                System.out.println(object);
-            }
-        } finally {
-            cursor.close();
-        }
-        return "";
+    
+      @GET
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public List<Paciente> getEmployees_JSON() throws UnknownHostException {
+         HelloMongo m=new HelloMongo();
+        List<Paciente> listOfCountries = m.show();
+        
+        return listOfCountries;
     }
-
-
-
-// URI:
-// /contextPath/servletPath/employees/{empNo}
-@GET
-        @Path("/{paciNo}")
-        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-        public Paciente getPaciente(@PathParam("paciNo") String name) {
-        return PacienteDAO.getPaciente(name);
-    }
-
-    // URI:
-    // /contextPath/servletPath/employees
+    
     @POST
-        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-        public Paciente addPaciente(Paciente emp) {
-        return PacienteDAO.addPaciente(emp);
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Paciente addPaciente(Paciente emp) {
+        
+        HelloMongo m = new HelloMongo();
+        return m.add(emp);
     }
-
-    // URI:
-    // /contextPath/servletPath/employees
+    
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.taller;
+package com.mycompany.controller;
 
 import java.util.List;
  
@@ -16,8 +16,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
  
-import com.mycompany.taller.Paciente;
-import com.mycompany.taller.PacienteDAO;
+import com.mycompany.model.Paciente;
+import com.mycompany.dao.PacienteDAO;
+import com.mycompany.dao.HelloMongo;
 import java.net.UnknownHostException;
 /**
  *

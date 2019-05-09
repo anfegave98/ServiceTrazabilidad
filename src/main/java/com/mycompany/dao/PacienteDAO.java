@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.taller;
+package com.mycompany.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mycompany.taller.Paciente;
+import com.mycompany.model.Paciente;
+import com.mycompany.model.Paciente;
 import java.net.UnknownHostException;
 
 

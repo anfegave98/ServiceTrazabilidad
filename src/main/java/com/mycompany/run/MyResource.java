@@ -1,4 +1,4 @@
-package com.mycompany.taller;
+package com.mycompany.run;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
